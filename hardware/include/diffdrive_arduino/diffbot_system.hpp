@@ -94,8 +94,13 @@ public:
     const rclcpp::Time & time, const rclcpp::Duration & period) override;
 
 private:
-
+  // The new keyword is used for dynamic memory allocation on the heap, and it returns a pointer to 
+  // the newly allocated object. In this case, the comms_ object is not being allocated dynamically 
+  // on the heap; it is a member variable of the DiffDriveArduinoHardware class and is automatically 
+  // constructed and destroyed with the containing object.
+  // Arduino communication object
   ArduinoComms comms_;
+
   Config cfg_;
   Wheel wheel_l_;
   Wheel wheel_r_;

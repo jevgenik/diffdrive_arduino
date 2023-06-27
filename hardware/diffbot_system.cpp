@@ -121,10 +121,13 @@ namespace diffdrive_arduino
   // the DiffDriveArduinoHardware class allows the ros2_control framework to access and read the state information 
   // (such as position and velocity) of the wheels controlled by the Arduino-based hardware interface. 
   // This information can then be used by controllers and other components within the ROS ecosystem for robot monitoring.
+  // The current implementation supports two state interfaces for each wheel: position and velocity.
   std::vector<hardware_interface::StateInterface> DiffDriveArduinoHardware::export_state_interfaces()
   {
-    std::vector<hardware_interface::StateInterface> state_interfaces;
+    std::vector<hardware_interface::StateInterface> state_interfaces; // vector of hardware_interface::StateInterface objects
 
+    // The hardware_interface::StateInterface is a class
+    // eplace_back() is a function that adds an element to the end of the vector
     state_interfaces.emplace_back(hardware_interface::StateInterface(
       wheel_l_.name, hardware_interface::HW_IF_POSITION, &wheel_l_.pos));
     state_interfaces.emplace_back(hardware_interface::StateInterface(
@@ -142,6 +145,7 @@ namespace diffdrive_arduino
   // the command interfaces of the hardware to be used within the ros2_control framework.
   // Once the command interfaces are exported and registered with the ros2_control system, controllers can use them 
   // to send commands to the hardware at the desired frequency. 
+  // THe current implementation supports one command interface for each wheel: velocity.
   std::vector<hardware_interface::CommandInterface> DiffDriveArduinoHardware::export_command_interfaces()
   {
     std::vector<hardware_interface::CommandInterface> command_interfaces;
@@ -155,8 +159,6 @@ namespace diffdrive_arduino
     return command_interfaces;
   }
 
-
-  
   hardware_interface::CallbackReturn DiffDriveArduinoHardware::on_configure(
     const rclcpp_lifecycle::State & /*previous_state*/)
   {
@@ -240,7 +242,8 @@ namespace diffdrive_arduino
   hardware_interface::return_type diffdrive_arduino ::DiffDriveArduinoHardware::write(
     const rclcpp::Time & /*time*/, const rclcpp::Duration & /*period*/)
   {
-    if (!comms_.connected())
+    if (!comms_.connected()) // comms_ is an instance of the ArduinoComms class
+                             // that is created in the constructor of the DiffDriveArduinoHardware class
     {
       return hardware_interface::return_type::ERROR;
     }

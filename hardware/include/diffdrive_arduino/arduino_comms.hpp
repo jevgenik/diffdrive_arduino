@@ -8,6 +8,8 @@
 #include <iostream>
 
 
+// This is a helper function to convert a baud rate from an integer to the LibSerial enum BaudRate
+// LibSerial is a namespace, BaudRate is enum class (CHECK whether this is correct)
 LibSerial::BaudRate convert_baud_rate(int baud_rate)
 {
   // Just handle some common baud rates
@@ -29,6 +31,8 @@ LibSerial::BaudRate convert_baud_rate(int baud_rate)
   }
 }
 
+// This class handles the serial communication with the Arduino
+// It uses the LibSerial library to do this
 class ArduinoComms
 {
 
@@ -77,11 +81,12 @@ public:
     }
 
     if (print_output)
-    {
+    { // `std::count` object is an instance of the std::ostream class, which represents the standard output stream
+      // `<<` is the stream insertion operator
       std::cout << "Sent: " << msg_to_send << " Recv: " << response << std::endl;
     }
 
-    return response;
+    return response; // Returns the response as a string
   }
 
 
