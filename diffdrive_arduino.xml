@@ -1,6 +1,15 @@
+<!-- 
+Is the plugin manifest file for the diffdrive_arduino package
+Is used to register the DiffDriveArduinoHardware class as a plugin for the ros2_control framework,
+allowing them to be discovered and loaded dynamically at runtime.
+The plugin is defined within the <library> tag and specifies the package name where the class is located. 
+In this case, the package name is "diffdrive_arduino". 
+'name': the fully qualified name of the class 
+'type': The C++ type of the class. 
+'base_class_type': The base class type that the plugin class inherits from. -->
 <library path="diffdrive_arduino">
-  <class name="diffdrive_arduino/DiffDriveArduinoHardware"
-         type="diffdrive_arduino::DiffDriveArduinoHardware"
+  <class name="diffdrive_arduino/DiffDriveArduinoHardware" 
+         type="diffdrive_arduino::DiffDriveArduinoHardware" 
          base_class_type="hardware_interface::SystemInterface">
     <description>
       The ros2_control DiffBot example using a system hardware interface-type. It uses velocity command and position state interface. The example is the starting point to implement a hardware interface for differential-drive mobile robots.

@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!-- Basic differential drive mobile base -->
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="diffdrive_robot">
-  <xacro:arg name="prefix" default="" />
+  <xacro:arg name="prefix" default="" /> <!-- prefix is used to differentiate between multiple robots -->
 
   <xacro:include filename="$(find diffdrive_arduino)/urdf/diffbot_description.urdf.xacro" />
 

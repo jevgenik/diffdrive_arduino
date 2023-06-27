@@ -33,9 +33,12 @@ class ArduinoComms
 {
 
 public:
-
+  
+  // By using = default, you are telling the compiler to generate the default implementation of the constructor, 
+  // which means it will have an empty body and will not perform any specific initialization or actions.
   ArduinoComms() = default;
 
+  // Connect to the Arduino
   void connect(const std::string &serial_device, int32_t baud_rate, int32_t timeout_ms)
   {  
     timeout_ms_ = timeout_ms;
@@ -45,15 +48,18 @@ public:
 
   void disconnect()
   {
-    serial_conn_.Close();
+    serial_conn_.Close(); // Close the serial port if it's open
   }
 
-  bool connected() const
+  // const keyword is used in C++ to indicate that a member function does not modify 
+  // the state of the object on which it is called
+  bool connected() const 
   {
-    return serial_conn_.IsOpen();
+    return serial_conn_.IsOpen(); // Isopen() returns true if the port is open
   }
 
-
+  // Sends a message to the Arduino and returns the response
+  // in the form of a string
   std::string send_msg(const std::string &msg_to_send, bool print_output = false)
   {
     serial_conn_.FlushIOBuffers(); // Just in case
@@ -84,6 +90,8 @@ public:
     std::string response = send_msg("\r");
   }
 
+  // Sends the "e" command to the Arduino to request encoder values
+  // and loads the values into the passed in variables (val_1 and val_2)
   void read_encoder_values(int &val_1, int &val_2)
   {
     std::string response = send_msg("e\r");
@@ -96,6 +104,9 @@ public:
     val_1 = std::atoi(token_1.c_str());
     val_2 = std::atoi(token_2.c_str());
   }
+
+  // Sends the "m" command to the Arduino to set the motor values
+  // val_1 and val_2 as the left and right motor values respectively (in encoder ticks/counts per frame)
   void set_motor_values(int val_1, int val_2)
   {
     std::stringstream ss;
@@ -103,6 +114,7 @@ public:
     send_msg(ss.str());
   }
 
+  // Sends the "u" command to the Arduino to set the PID values
   void set_pid_values(int k_p, int k_d, int k_i, int k_o)
   {
     std::stringstream ss;
