@@ -9,7 +9,7 @@ class Wheel
 {
     public:
 
-    std::string name = "";
+    std::string name = ""; // name of the wheel (std::string is a class/object that holds a string)
     int enc = 0;
     double cmd = 0;
     double pos = 0;

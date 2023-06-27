@@ -128,6 +128,10 @@ namespace diffdrive_arduino
 
     // The hardware_interface::StateInterface is a class
     // eplace_back() is a function that adds an element to the end of the vector
+    // StateInterface(const std::string & prefix_name, const std::string & interface_name, double * value_ptr = nullptr)
+    // prefix_name - name of the joint (e.g. 'left_wheel_joint')
+    // constexpr char hardware_interface::HW_IF_POSITION = "position" - constant defining the position interface (constexpr means that 
+    // the value of the variable cannot be changed after initialization)
     state_interfaces.emplace_back(hardware_interface::StateInterface(
       wheel_l_.name, hardware_interface::HW_IF_POSITION, &wheel_l_.pos));
     state_interfaces.emplace_back(hardware_interface::StateInterface(
@@ -158,7 +162,8 @@ namespace diffdrive_arduino
 
     return command_interfaces;
   }
-
+  
+  // Connects to the Arduino board
   hardware_interface::CallbackReturn DiffDriveArduinoHardware::on_configure(
     const rclcpp_lifecycle::State & /*previous_state*/)
   {
@@ -172,7 +177,8 @@ namespace diffdrive_arduino
 
     return hardware_interface::CallbackReturn::SUCCESS;
   }
-
+  
+  // Disconnects from the Arduino board
   hardware_interface::CallbackReturn DiffDriveArduinoHardware::on_cleanup(
     const rclcpp_lifecycle::State & /*previous_state*/)
   {
@@ -187,6 +193,7 @@ namespace diffdrive_arduino
   }
 
   // This is called when the state switches to the "activating" state
+  // Sets the PID values on the Arduino board
   hardware_interface::CallbackReturn DiffDriveArduinoHardware::on_activate(
     const rclcpp_lifecycle::State & /*previous_state*/)
   {
@@ -213,6 +220,8 @@ namespace diffdrive_arduino
     return hardware_interface::CallbackReturn::SUCCESS;
   }
 
+  // This is called periodically when the state is "active"
+  // Reads the encoder values from the Arduino board and calculates position and velocity of the wheels
   hardware_interface::return_type DiffDriveArduinoHardware::read(
     const rclcpp::Time & /*time*/, const rclcpp::Duration & period)
   {
