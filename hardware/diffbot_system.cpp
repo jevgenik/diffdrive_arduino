@@ -27,6 +27,15 @@
 
 namespace diffdrive_arduino
 { 
+  /**
+   * @brief Initializes the hardware interface with the given hardware information.
+   * 
+   * This function is called by the ros2_control framework to initialize the hardware interface with the given hardware information.
+   * It sets up the configuration parameters for the hardware interface and checks if the joint command and state interfaces are valid.
+   * 
+   * @param info The hardware information containing the configuration parameters and joint information.
+   * @return hardware_interface::CallbackReturn::SUCCESS if the initialization is successful, hardware_interface::CallbackReturn::ERROR otherwise.
+   */
   hardware_interface::CallbackReturn DiffDriveArduinoHardware::on_init(
     const hardware_interface::HardwareInfo & info)
   {
@@ -62,7 +71,7 @@ namespace diffdrive_arduino
     wheel_l_.setup(cfg_.left_wheel_name, cfg_.enc_counts_per_rev);
     wheel_r_.setup(cfg_.right_wheel_name, cfg_.enc_counts_per_rev);
 
-
+    // Check if the joint command and state interfaces are valid
     for (const hardware_interface::ComponentInfo & joint : info_.joints)
     {
       // DiffBotSystem has exactly two states and one command interface on each joint
@@ -113,7 +122,7 @@ namespace diffdrive_arduino
     }
 
     return hardware_interface::CallbackReturn::SUCCESS;
-  }
+  } // end of on_init function
   
   // Returns a vector of hardware_interface::StateInterface objects. This function is responsible for exporting 
   // the state interfaces of the hardware to be used within the ros2_control framework.
@@ -202,9 +211,9 @@ namespace diffdrive_arduino
     {
       return hardware_interface::CallbackReturn::ERROR;
     }
-    if (cfg_.pid_p > 0)
+    if (cfg_.pid_p > 0) // cfg_ is a struct defined in diffbot_system.hpp
     {
-      comms_.set_pid_values(cfg_.pid_p,cfg_.pid_d,cfg_.pid_i,cfg_.pid_o);
+      comms_.set_pid_values(cfg_.pid_p,cfg_.pid_d,cfg_.pid_i,cfg_.pid_o); // Sets the PID values on the Arduino board
     }
     RCLCPP_INFO(rclcpp::get_logger("DiffDriveArduinoHardware"), "Successfully activated!");
 
